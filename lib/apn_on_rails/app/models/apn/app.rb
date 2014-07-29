@@ -48,7 +48,9 @@ class APN::App < APN::Base
         APN::Connection.open_for_delivery({:cert => the_cert}) do |conn, sock|
           notifications = APN::Notification.find(:all, :select => "apn_notifications.*", :conditions => conditions, :joins => " INNER JOIN apn_devices ON apn_devices.id = apn_notifications.device_id")
           notifications.each do |noty|
-            conn.write(noty.message_for_sending)
+            msg = noty.message_for_sending
+            conn.write(msg)
+            puts msg
             noty.sent_at = Time.now
             noty.save
           end
