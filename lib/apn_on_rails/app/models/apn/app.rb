@@ -50,7 +50,7 @@ class APN::App < APN::Base
           notifications.each do |noty|
             msg = noty.message_for_sending
             conn.write(msg)
-            puts msg
+            Rails.logger.info(msg)
             noty.sent_at = Time.now
             noty.save
           end
